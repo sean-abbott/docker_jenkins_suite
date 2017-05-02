@@ -12,12 +12,21 @@ services:
     ports:
       - "8080:8080"
       - "50000:50000"
+    labels:
+      - "traefik.backend=jenkins"
+      - "traefik.frontend.rule=Host:${JENKSUITE_JENKINS_HOSTIP}"
+      - "traefik.port:80"
     volumes:
       - "data-jenkins:/var/jenkins_home"
       - "${JENKSUITE_JENKINS_REFDIR:-./jenkins/ref}:/usr/share/jenkins/ref/init.groovy.d"
-      - "${JENKSUITE_JENKINS_CONFIGFILE:-./jenkins/config/config.xml}:/var/jenkins_home/config.xml"
+      - "${JENKSUITE_JENKINS_GITCONFIGFILE:-./jenkins/config/github-plugin-configuration.xml}:/var/jenkins_home/github-plugin-configuration.xml"
 
   traefik:
     image: "traefik"
+    command: --web --docker --docker.domain=docker.localhost --docker.watch --logLevel=DEBUG --entryPoints='Name:http Address::80' --defaultEntryPoints='http' --accessLogsFile='log/access.log'
+    network_mode: "host"
+    ports:
+      - "80:80"
     volumes:
-      - ${JENKSUITE_TRAEFIK_CONFIGFILE:-./traefik/config/traefik.json}:traefik.json
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "/dev/null:/traefik.toml"
