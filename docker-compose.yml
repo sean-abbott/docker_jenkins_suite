@@ -1,0 +1,23 @@
+version: '2.1'
+
+volumes:
+  data-jenkins:
+    driver: "local"
+
+services:
+  jenkins:
+    build: jenkins/
+    environment:
+      JAVA_OPTS: "-Djava.awt.headless=true -Djenkins.install.runSetupWizard=false"
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - "data-jenkins:/var/jenkins_home"
+      - "${JENKSUITE_JENKINS_REFDIR:-./jenkins/ref}:/usr/share/jenkins/ref/init.groovy.d"
+      - "${JENKSUITE_JENKINS_CONFIGFILE:-./jenkins/config/config.xml}:/var/jenkins_home/config.xml"
+
+  traefik:
+    image: "traefik"
+    volumes:
+      - ${JENKSUITE_TRAEFIK_CONFIGFILE:-./traefik/config/traefik.json}:traefik.json
