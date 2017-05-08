@@ -10,19 +10,19 @@ services:
     environment:
       JAVA_OPTS: "-Djava.awt.headless=true -Djenkins.install.runSetupWizard=false"
     ports:
-      - "8081:8080"
+      - "8080:8080"
       - "50000:50000"
     labels:
       - "traefik.backend=jenkins"
       - "traefik.frontend.rule=Host:${JENKSUITE_JENKINS_HOSTIP}"
-      - "traefik.port:80"
+      - "traefik.port:8080"
     volumes:
       - "data-jenkins:/var/jenkins_home"
       - "${JENKSUITE_JENKINS_REFDIR:-./jenkins/ref}:/usr/share/jenkins/ref/init.groovy.d"
 
   traefik:
     image: "traefik"
-    command: --web --web.address=:8080 --docker --docker.domain=docker.localhost --docker.watch --logLevel=DEBUG --entryPoints='Name:http Address::80' --defaultEntryPoints='http' --accessLogsFile='log/access.log'
+    command: --web --web.address=:8081 --docker --docker.domain=docker.localhost --docker.watch --logLevel=DEBUG --entryPoints='Name:http Address::80' --defaultEntryPoints='http' --accessLogsFile='log/access.log'
     network_mode: "host"
     ports:
       - "80:80"
