@@ -21,7 +21,7 @@ services:
       - "${JENKSUITE_JENKINS_REFDIR:-./jenkins/ref}:/usr/share/jenkins/ref/init.groovy.d"
 
   traefik:
-    image: "traefik"
+    image: "traefik:v1.3"
     command: --web --web.address=:8081 --docker --docker.domain=docker.localhost --docker.watch --logLevel=DEBUG --entryPoints='Name:http Address::80' --defaultEntryPoints='http' --accessLogsFile='log/access.log'
     network_mode: "host"
     ports:
