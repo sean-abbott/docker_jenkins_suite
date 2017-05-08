@@ -19,7 +19,6 @@ services:
     volumes:
       - "data-jenkins:/var/jenkins_home"
       - "${JENKSUITE_JENKINS_REFDIR:-./jenkins/ref}:/usr/share/jenkins/ref/init.groovy.d"
-      - "${JENKSUITE_JENKINS_GITCONFIGFILE:-./jenkins/config/github-plugin-configuration.xml}:/var/jenkins_home/github-plugin-configuration.xml"
 
   traefik:
     image: "traefik"
