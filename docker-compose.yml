@@ -4,11 +4,16 @@ volumes:
   data-jenkins:
     driver: "local"
 
+networks:
+  jenkins_suite:
+
 services:
   jenkins:
     build: jenkins/
     environment:
       JAVA_OPTS: "-Djava.awt.headless=true -Djenkins.install.runSetupWizard=false"
+    networks:
+      - jenkins_suite
     ports:
       - "8080:8080"
       - "50000:50000"

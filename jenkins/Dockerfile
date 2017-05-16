@@ -10,8 +10,7 @@ ADD config/hudson.plugins.git.GitSCM.xml /var/jenkins_home/hudson.plugins.git.Gi
 ADD config/plugins.txt /usr/share/jenkins/plugins.txt
 
 RUN mkdir /var/jenkins_home/.ssh/
-ADD config/id_rsa /var/jenkins_home/.ssh/id_rsa
-ADD config/id_rsa.pub /var/jenkins_home/.ssh/id_rsa.pub
-RUN chmod 0600 /var/jenkins_home/.ssh/id_rsa
+COPY config/id_rsa /var/jenkins_home/.ssh/id_rsa
+COPY config/id_rsa.pub /var/jenkins_home/.ssh/id_rsa.pub
 
 RUN /usr/local/bin/plugins.sh /usr/share/jenkins/plugins.txt
